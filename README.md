@@ -1,4 +1,4 @@
-# JaGolangva Cron Parser
+# Golang Cron Parser
 
 This Cron Parser is coded in Go
 
