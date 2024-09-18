@@ -1,7 +1,7 @@
 package stratergy
 
 import (
-	"fmt"
+	"errors"
 	"strconv"
 	"strings"
 
@@ -50,7 +50,7 @@ func parseRanges(val string, startLimit, endLimit int) ([]int, error) {
 	} else if strings.Contains(val, "-") {
 		data := strings.Split(val, "-")
 		if len(data) != 2 {
-			return nil, fmt.Errorf("cannot send more than start range and end range")
+			return nil, errors.New("cannot send more than start range and end range")
 		}
 
 		startVal, err := strconv.Atoi(data[0])
@@ -66,7 +66,7 @@ func parseRanges(val string, startLimit, endLimit int) ([]int, error) {
 		endVal = lib.Min(endVal, endLimit)
 
 		if startVal > endVal {
-			return nil, fmt.Errorf("invalid cron expression")
+			return nil, errors.New("invalid cron expression")
 		}
 
 		for i := startVal; i <= endVal; i++ {
@@ -75,7 +75,7 @@ func parseRanges(val string, startLimit, endLimit int) ([]int, error) {
 	} else if strings.Contains(val, "/") {
 		data := strings.Split(val, "/")
 		if len(data) != 2 {
-			return nil, fmt.Errorf("invalid cron expression")
+			return nil, errors.New("invalid cron expression")
 		}
 
 		startVal := startLimit
@@ -85,6 +85,9 @@ func parseRanges(val string, startLimit, endLimit int) ([]int, error) {
 			if err != nil {
 				return nil, err
 			}
+			if startVal < startLimit {
+				return nil, errors.New("start value is less that start limit")
+			}
 		}
 
 		stepUp, err := strconv.Atoi(data[1])
@@ -92,11 +95,11 @@ func parseRanges(val string, startLimit, endLimit int) ([]int, error) {
 			return nil, err
 		}
 
-		for i := startVal; i < endLimit; i += stepUp {
+		for i := startVal; i <= endLimit; i += stepUp {
 			tempData = append(tempData, i)
 		}
 	} else {
-		return nil, fmt.Errorf("invalid cron expression")
+		return nil, errors.New("invalid cron expression")
 	}
 	return tempData, nil
 

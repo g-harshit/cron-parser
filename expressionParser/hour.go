@@ -3,8 +3,8 @@ package expressionparser
 import "github.com/cron-parser/stratergy"
 
 const (
-	startHour = 1
-	endHour   = 24
+	startHour = 0
+	endHour   = 23
 )
 
 type hour struct {

@@ -3,8 +3,8 @@ package expressionparser
 import "github.com/cron-parser/stratergy"
 
 const (
-	startMinute = 1
-	endMinute   = 60
+	startMinute = 0
+	endMinute   = 59
 )
 
 type minute struct {
